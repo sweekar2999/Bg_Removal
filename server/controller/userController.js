@@ -7,7 +7,6 @@ import userModel from '../models/userModel.js'
 const clerkWebhooks = async (req,res) =>{
     
     try {
-        // create a svix instant with cleark webhook secret
 
         const whook =new Webhook(process.env.CLERK_WEBHOOK_SECRET)
         await whook.verify(JSON.stringify(req.body),{
