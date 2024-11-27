@@ -28,6 +28,7 @@ const clerkWebhooks = async (req,res) =>{
                     photo: data.image_url,
                 }
                 await userModel.create(userData)
+                console.log('User created:', userData)
                 res.json({})
                 
                 break;
@@ -41,20 +42,23 @@ const clerkWebhooks = async (req,res) =>{
                     photo:data.image_url,
                 }
                 await userModel.findOneAndUpdate({clerkId:data.id},userData)
+                console.log('User updated:', userData)
                 res.json({})
                 break;
             }        
             case "user.deleted": {
-                await userModel.findByIdAndDelete({clerkId:data.id})
+                await userModel.findOneAndDelete({clerkId:data.id})
+                console.log('User deleted:', data.id)
                 res.json({})
                 break;
             }        
             default:
+                res.status(400).json({success: false, message: 'Unhandled event type'})
                 break;
         }
     } catch (error) {
-        console.log(error.message)
-        res.json({success:false,message:error.message})
+        console.error('Webhook error:', error.message)
+        res.status(500).json({success: false, message: error.message})
     }
 }
 
