@@ -8,12 +8,17 @@ const clerkWebhooks = async (req,res) =>{
     
     try {
 
+        console.log('Received webhook:', req.body);
+
         const whook =new Webhook(process.env.CLERK_WEBHOOK_SECRET)
         await whook.verify(JSON.stringify(req.body),{
             'svix-id' :req.headers["svix-id"],
             "svix-timestamp":req.headers["svix-timestamp"],
             "svix-signature":req.headers["svix-signature"]
         })
+
+        console.log('Webhook verified successfully');
+
         const { data, type } = req.body
 
         switch ( type ) {
@@ -53,11 +58,12 @@ const clerkWebhooks = async (req,res) =>{
                 break;
             }        
             default:
+                console.log('Unhandled event type:', type);
                 res.status(400).json({success: false, message: 'Unhandled event type'})
                 break;
         }
     } catch (error) {
-        console.error('Webhook error:', error.message)
+        console.error('Webhook error:', error)
         res.status(500).json({success: false, message: error.message})
     }
 }
