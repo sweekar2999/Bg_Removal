@@ -3,8 +3,7 @@ import axios from "axios";
 import fs from "fs";
 import FormData from "form-data";
 import userModel from "../models/userModel.js";
-import { successResponse } from "./responseController.js";
-import paymentModel from "../models/paymentModel.js";
+
 
 const removeBgImage = async (req, res, next) => {
   try {
@@ -47,14 +46,7 @@ const removeBgImage = async (req, res, next) => {
       creditBalance: user.creditBalance - 1,
     });
 
-    return successResponse(res, {
-      statusCode: 200,
-      message: "Background removed successfully",
-      payload: {
-        resultImage,
-        creditBalance: user.creditBalance - 1,
-      },
-    });
+   res.json({success:true,resultImage,creditBalance:user.creditBalance-1,message:"Background removed succcessfully"})
   } catch (error) {
     console.error("Error removing background:", error.message);
     if (error.response) {
