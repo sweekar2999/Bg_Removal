@@ -3,6 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import connectDB from './configs/mongodb.js';
 import userRouter from './routes/userRoutes.js'
+import imageRouter from './routes/imageRoutes.js';
 
 
 //app
