@@ -41,23 +41,23 @@ const AppContextProvider = (props) => {
       setImage(image);
       setResultImage(false);
       navigate("/result");
-
+  
       const token = await getToken();
       const formData = new FormData();
       image && formData.append("image", image);
-
+  
       const { data } = await axios.post(
-        backendUrl + "/api/image/remove-bg",
+        `${backendUrl}/api/image/remove-bg`,
         formData,
         { headers: { token, "Content-Type": "multipart/form-data" } }
       );
-
+  
       if (data.success) {
-        setResultImage(data.payload.resultImage);
-        data.payload.creditBalance && setCredit(data.payload.creditBalance);
+        setResultImage(data.resultImage); // Access `resultImage` directly
+        data.creditBalance && setCredit(data.creditBalance); // Access `creditBalance` directly
       } else {
         alert("Something went wrong");
-        if (data.payload.creditBalance === 0) {
+        if (data.creditBalance === 0) {
           navigate("/buy-credits");
         }
       }
@@ -66,6 +66,7 @@ const AppContextProvider = (props) => {
       alert("Failed to remove background. Please try again.");
     }
   };
+  
 
   const value = {
     setCredit,
