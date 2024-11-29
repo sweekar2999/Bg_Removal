@@ -22,6 +22,7 @@ app.get('/',(req,res)=>{
     res.send("Hi")
 });
 app.use("/api/user",userRouter)
+app.use("/api/image", imageRouter);
 
 app.listen(PORT,()=>{
     console.log(`server running on port ${PORT}`);
